@@ -1,4 +1,8 @@
 
+using Microsoft.EntityFrameworkCore;
+using ToDoTelDat.Entities;
+using ToDoTelDat.Models;
+
 namespace ToDoTelDat
 {
     public class Program
@@ -8,6 +12,13 @@ namespace ToDoTelDat
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            var apiConfiguration = new AppSettings();
+            builder.Configuration.Bind(apiConfiguration);
+            builder.Services.AddSingleton(apiConfiguration);
+
+            builder.Services.AddDbContext<ToDoContext>(opt => opt.UseSqlServer(apiConfiguration.ConnectionString));
+
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
