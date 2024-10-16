@@ -1,7 +1,8 @@
-
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ToDoTelDat.Entities;
 using ToDoTelDat.Models;
+using ToDoTelDat.Queries;
 
 namespace ToDoTelDat
 {
@@ -18,6 +19,9 @@ namespace ToDoTelDat
             builder.Services.AddSingleton(apiConfiguration);
 
             builder.Services.AddDbContext<ToDoContext>(opt => opt.UseSqlServer(apiConfiguration.ConnectionString));
+
+            builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<GetByDayQuery>());
+                
 
 
             builder.Services.AddControllers();

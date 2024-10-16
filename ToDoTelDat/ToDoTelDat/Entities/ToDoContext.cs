@@ -7,6 +7,8 @@ namespace ToDoTelDat.Entities
     {
         public DbSet<ToDo> ToDoes { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         public ToDoContext(DbContextOptions options) : base(options)
         {
         }
