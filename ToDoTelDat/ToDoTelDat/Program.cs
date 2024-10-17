@@ -3,6 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using ToDoTelDat.Entities;
 using ToDoTelDat.Models;
 using ToDoTelDat.Queries;
+using FluentValidation;
+using ToDoTelDat.Commands;
+using ToDoTelDat.Validations;
+using FluentValidation.AspNetCore;
+using ToDoTelDat.Middlewares;
 
 namespace ToDoTelDat
 {
@@ -21,8 +26,10 @@ namespace ToDoTelDat
             builder.Services.AddDbContext<ToDoContext>(opt => opt.UseSqlServer(apiConfiguration.ConnectionString));
 
             builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<GetByDayQuery>());
-                
 
+            builder.Services.AddValidatorsFromAssemblyContaining<CreateToDoCommandValidator>()
+                .AddFluentValidationAutoValidation()
+                .AddFluentValidationClientsideAdapters();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -41,7 +48,7 @@ namespace ToDoTelDat
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
+            app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
             app.MapControllers();
 

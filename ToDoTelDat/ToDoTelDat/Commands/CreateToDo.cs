@@ -20,7 +20,7 @@ namespace ToDoTelDat.Commands
             {
                 TaskName = request.ToDo.TaskName,
                 Description = request.ToDo.Description,
-                Day = request.ToDo.Day,
+                StartDate = request.ToDo.StartDate,
                 UserId = request.ToDo.UserId,
             };
             await _dbContext.AddAsync(newToDo, CancellationToken.None);
