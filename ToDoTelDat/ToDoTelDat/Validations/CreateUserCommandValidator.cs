@@ -37,7 +37,7 @@ namespace ToDoTelDat.Validations
                 else return true;
             })
             .WithName(nameof(User.UserName))
-            .WithMessage("UserName have to be unique");
+            .WithMessage("UserName should be unique");
         }
     }
 }

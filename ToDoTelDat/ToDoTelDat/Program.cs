@@ -1,13 +1,11 @@
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using ToDoTelDat.Entities;
-using ToDoTelDat.Models;
-using ToDoTelDat.Queries;
 using FluentValidation;
-using ToDoTelDat.Commands;
-using ToDoTelDat.Validations;
-using FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using ToDoTelDat.Entities;
 using ToDoTelDat.Middlewares;
+using ToDoTelDat.Models;
+using ToDoTelDat.Pipelines;
+using ToDoTelDat.Queries;
 
 namespace ToDoTelDat
 {
@@ -24,12 +22,15 @@ namespace ToDoTelDat
             builder.Services.AddSingleton(apiConfiguration);
 
             builder.Services.AddDbContext<ToDoContext>(opt => opt.UseSqlServer(apiConfiguration.ConnectionString));
+            builder.Services.AddValidatorsFromAssemblyContaining<ToDoContext>();   
+            builder.Services.AddMediatR(c =>
+            {
+                c.RegisterServicesFromAssemblyContaining<GetByDayQuery>();
+                c.AddOpenBehavior(typeof(ValidationBehavior<,>));
+            });
 
-            builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<GetByDayQuery>());
+            
 
-            builder.Services.AddValidatorsFromAssemblyContaining<CreateToDoCommandValidator>()
-                .AddFluentValidationAutoValidation()
-                .AddFluentValidationClientsideAdapters();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
