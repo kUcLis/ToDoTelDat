@@ -16,6 +16,14 @@ namespace ToDoTelDat.Validations
             })
             .WithName(nameof(ToDo.ToDoId))
             .WithMessage("ToDo to delete not found");
+
+            RuleFor(x => x.UserId)
+            .MustAsync(async (x, cTkn) =>
+            {
+                return await dbContext.Users.AnyAsync(t => t.UserId == x, cTkn);
+            })
+            .WithName(nameof(ToDo.UserId))
+            .WithMessage("User not found");
         }
     }
 }

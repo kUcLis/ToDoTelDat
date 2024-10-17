@@ -4,7 +4,7 @@ using ToDoTelDat.Entities;
 
 namespace ToDoTelDat.Commands
 {
-    public record DeleteToDoCommand(int ToDoId) : IRequest<bool>;
+    public record DeleteToDoCommand(int ToDoId, int UserId) : IRequest<bool>;
 
     public class DeleteToDoCommandHandler : IRequestHandler<DeleteToDoCommand, bool>
     {
@@ -18,7 +18,7 @@ namespace ToDoTelDat.Commands
         {
             var toDoToDelete = await _dbContext.ToDoes.FirstOrDefaultAsync(t => t.ToDoId == request.ToDoId);
 
-            if(toDoToDelete is null)
+            if(toDoToDelete is null || toDoToDelete.UserId != request.UserId)
                 return false;
 
             _dbContext.ToDoes.Remove(toDoToDelete);
