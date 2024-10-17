@@ -44,6 +44,9 @@ namespace ToDoTelDat
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseCors(options =>
+                options.AllowAnyOrigin()
+            );
 
             app.UseHttpsRedirection();
 

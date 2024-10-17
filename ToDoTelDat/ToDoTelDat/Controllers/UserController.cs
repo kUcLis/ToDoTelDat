@@ -1,24 +1,25 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ToDoTelDat.Commands;
-using ToDoTelDat.Entities;
 
 namespace ToDoTelDat.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class ToDoController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IMediator _mediatr;
 
-        public ToDoController(IMediator mediatr)
+        public UserController(IMediator mediatr)
         {
             _mediatr = mediatr;
         }
+
         [HttpPost]
-        public async Task<IActionResult> CreateToDo(ToDo toDo)
+        [Route("create/{userName}")]
+        public async Task<IActionResult> CreateUser([FromRoute] string userName)
         {
-            var response = await _mediatr.Send(new CreateToDoCommand(toDo));
+            var response = await _mediatr.Send(new CreateUserCommand(userName));
             return Ok(response);
         }
     }
