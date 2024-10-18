@@ -17,6 +17,7 @@ namespace ToDoTelDat.Queries
         }
         public async Task<IList<ToDoDto>> Handle(GetByDayQuery request, CancellationToken cancellationToken)
         {
+
             return await _dbContext.ToDoes
                 .Include(t => t.User)
                 .Where(t => t.UserId == request.UserId && t.StartDate.Date == request.Day.Date)
@@ -26,8 +27,8 @@ namespace ToDoTelDat.Queries
                     TaskName = t.TaskName,
                     StartDate = t.StartDate,
                     UserId = request.UserId,
-                    IsDisabled = DateTime.Now > t.StartDate,
-                    TurnAlarm = (DateTime.Now - t.StartDate).TotalMinutes < 30 && (DateTime.Now - t.StartDate).TotalMinutes > 0
+                    IsDisabled = DateTime.Now < t.StartDate,
+                    TurnAlarm = ((DateTime.Now - t.StartDate).TotalMinutes < 30.0  && DateTime.Now > t.StartDate)
                 })
                 .OrderBy(t => t.StartDate)
                 .ToListAsync(cancellationToken);
