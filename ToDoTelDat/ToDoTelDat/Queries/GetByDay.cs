@@ -27,8 +27,8 @@ namespace ToDoTelDat.Queries
                     TaskName = t.TaskName,
                     StartDate = t.StartDate,
                     UserId = request.UserId,
-                    IsDisabled = DateTime.Now < t.StartDate,
-                    TurnAlarm = ((DateTime.Now - t.StartDate).TotalMinutes < 30.0  && DateTime.Now > t.StartDate)
+                    IsDisabled = DateTime.Now > t.StartDate,
+                    TurnAlarm = (DateTime.Now < t.StartDate && (t.StartDate - DateTime.Now).TotalMinutes < 30.0)
                 })
                 .OrderBy(t => t.StartDate)
                 .ToListAsync(cancellationToken);
