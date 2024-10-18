@@ -35,7 +35,7 @@ namespace ToDoTelDat.Validations
                    .WithMessage("StartDate is required");
 
             RuleFor(x => x.ToDo.StartDate)
-                   .Must(x => x > DateTime.Now)
+                   .Must(x => x.AddHours(2) > DateTime.Now)
                    .WithName(nameof(ToDo.StartDate))
                    .WithMessage("StartDate Must start in the future");
 

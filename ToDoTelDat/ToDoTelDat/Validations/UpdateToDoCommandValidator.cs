@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using ToDoTelDat.Commands;
 using ToDoTelDat.Entities;
 
@@ -6,8 +7,16 @@ namespace ToDoTelDat.Validations
 {
     public class UpdateToDoCommandValidator : AbstractValidator<UpdateToDoCommand>
     {
-        public UpdateToDoCommandValidator()
+        public UpdateToDoCommandValidator(ToDoContext dbContext)
         {
+            RuleFor(x => x.ToDo.ToDoId)
+            .MustAsync(async (x, cTkn) =>
+            {
+                return await dbContext.ToDoes.AnyAsync(t => t.ToDoId == x, cTkn);
+            })
+            .WithName(nameof(ToDo.ToDoId))
+            .WithMessage("ToDo to update not found");
+
             RuleFor(x => x.ToDo.TaskName)
                 .NotEmpty()
                 .WithName(nameof(ToDo.TaskName))

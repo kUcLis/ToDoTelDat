@@ -21,6 +21,10 @@ namespace ToDoTelDat.Controllers
         public async Task<IActionResult> GetByName([FromRoute] string userName)
         {
             var response = await _mediatr.Send(new GetUserByUserNameQuery(userName));
+
+            if(response is null)
+                return NotFound();
+
             return Ok(response);
         }
 

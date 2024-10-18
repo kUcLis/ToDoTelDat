@@ -15,10 +15,19 @@ namespace ToDoTelDat.Commands
         }
         public async Task<ToDo> Handle(UpdateToDoCommand request, CancellationToken cancellationToken)
         {
-            _dbContext.Update(request.ToDo);
+            var toDoToUpdate = new ToDo
+            {
+                ToDoId = request.ToDo.ToDoId,
+                TaskName = request.ToDo.TaskName,
+                Description = request.ToDo.Description,
+                StartDate = request.ToDo.StartDate.AddHours(2),
+                UserId = request.ToDo.UserId,
+            };
+
+            _dbContext.Update(toDoToUpdate);
             await _dbContext.SaveChangesAsync(CancellationToken.None);
             
-            return request.ToDo;
+            return toDoToUpdate;
         }
     }
 }
