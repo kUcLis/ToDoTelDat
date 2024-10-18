@@ -19,6 +19,7 @@ namespace ToDoTelDat.Queries
             return await _dbContext.ToDoes
                 .Include(t => t.User)
                 .Where(t => t.UserId == request.UserId && t.StartDate.Date == request.Day.Date)
+                .OrderBy(t => t.StartDate)
                 .ToListAsync(cancellationToken);
         }
     }

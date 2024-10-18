@@ -18,10 +18,11 @@ namespace ToDoTelDat.Controllers
         }
 
         [HttpGet]
-        [Route("{userId}")]
-        public async Task<IActionResult> GetByDate(DateTime day, [FromRoute] int userId)
+        [Route("{userId}/{day}")]
+        public async Task<IActionResult> GetByDate([FromRoute]string day, [FromRoute] int userId)
         {
-            var response = await _mediatr.Send(new GetByDayQuery(day, userId));
+            var startDate = DateTime.ParseExact(day, "yyyy-MM-dd", null);
+            var response = await _mediatr.Send(new GetByDayQuery(startDate, userId));
 
             if(!response.Any())
                 return NotFound();

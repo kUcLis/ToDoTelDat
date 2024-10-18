@@ -3,9 +3,9 @@ using ToDoTelDat.Entities;
 
 namespace ToDoTelDat.Commands
 {
-    public record CreateUserCommand(string UserName) : IRequest<int>;
+    public record CreateUserCommand(string UserName) : IRequest<User>;
 
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
+    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, User>
     {
         private readonly ToDoContext _dbContext;
 
@@ -13,7 +13,7 @@ namespace ToDoTelDat.Commands
         {
             _dbContext = dbContext;
         }
-        public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<User> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             var newUser = new User
             {
@@ -23,7 +23,7 @@ namespace ToDoTelDat.Commands
             await _dbContext.Users.AddAsync(newUser, CancellationToken.None);
             await _dbContext.SaveChangesAsync(CancellationToken.None);
 
-            return newUser.UserId;
+            return newUser;
         }
     }
 }
