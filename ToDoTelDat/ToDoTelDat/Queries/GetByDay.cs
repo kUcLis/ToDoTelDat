@@ -25,6 +25,7 @@ namespace ToDoTelDat.Queries
                 {
                     ToDoId = t.ToDoId,
                     TaskName = t.TaskName,
+                    Description = t.Description,
                     StartDate = t.StartDate,
                     UserId = request.UserId,
                     IsDisabled = DateTime.Now > t.StartDate,
